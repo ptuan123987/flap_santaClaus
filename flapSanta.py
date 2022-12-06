@@ -117,7 +117,8 @@ def tube_score():
 
 pygame.init()
 pygame.display.set_caption('Flapp Santa')
-pygame.display.set_icon()
+image_icon = pygame.image.load('Santa Claus Images/santa_icon.PNG')
+pygame.display.set_icon(image_icon)
 screen = pygame.display.set_mode((432, 768))
 clock = pygame.time.Clock()
 game_font = pygame.font.Font('Santa Claus Sounds/04B_19.TTF', 35)
