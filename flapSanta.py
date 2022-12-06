@@ -12,11 +12,17 @@ def draw_floor():
 
 # tạo ống
 def create_tube():
-    random_tube_pos = random.choice(tube_height)  # chọn chiều cao ngẫu nhiên cho ống
-    bot_tube = tube_screen.get_rect(midtop=(650, random_tube_pos))  # ống dưới
-    top_tube = tube_screen.get_rect(midtop=(650, random_tube_pos - 700))  # ống trên
+    # chọn chiều cao ngẫu nhiên cho ống
+    random_tube_pos = random.choice(tube_height)  
+    
+    # ống dưới
+    bot_tube = tube_screen.get_rect(midtop=(650, random_tube_pos)) 
+    # ống trên 
+    top_tube = tube_screen.get_rect(midtop=(650, random_tube_pos - 700))  
     if score > 3 and score < 10:
-        bot_tube = tube_screen.get_rect(midtop=(650, random_tube_pos))  # ống dưới
+        # ống dưới
+        bot_tube = tube_screen.get_rect(midtop=(650, random_tube_pos))  
+        # ống trên
         top_tube = tube_screen.get_rect(midtop=(550, random_tube_pos - 650))  # ống trên
     return bot_tube, top_tube
 
@@ -112,7 +118,7 @@ def tube_score():
 pygame.init()
 screen = pygame.display.set_mode((432, 768))
 clock = pygame.time.Clock()
-game_font = pygame.font.Font('Santa Claus Sounds/04B_19.ttf', 35)
+game_font = pygame.font.Font('Santa Claus Sounds/04B_19.TTF', 35)
 
 # tạo các biến cho trò chơi
 gravity = 0.2
@@ -121,7 +127,7 @@ active = True
 score = 0
 high_score = 0
 can_score = True
-
+stop = False
 # chèn background
 # convert đổi file hình ảnh thành file nhẹ hơn để pygame load nhanh hơn
 background = pygame.image.load('Santa Claus Images/dark.PNG').convert()
