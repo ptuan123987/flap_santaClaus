@@ -113,13 +113,16 @@ def tube_score():
 
             if tube.centerx < 0:
                 can_score = True
+                
+#dừng lại                
 def pause(stop):
+    
     my_font = pygame.font.Font('Santa Claus Sounds/ComicSansMS3.ttf', 90)
     text_surface = my_font.render("Paused", True, (255, 255, 255))
     rect = text_surface.get_rect(center=(200, 150))
     screen.blit(text_surface, rect)
 
-    while stop:
+    while stop: 
         for event in pygame.event.get():
             # quit the game
             if event.type == pygame.QUIT:
@@ -227,7 +230,7 @@ while True:
                 santa_movement = 0
                 score = 0
             
-            if event.key == pygame.K_0:
+            if event.key == pygame.K_p:
                 stop = True
                 pause(stop)
                          
