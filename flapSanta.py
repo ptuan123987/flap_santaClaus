@@ -1,5 +1,6 @@
 import random
 import sys
+import time
 
 import pygame
 
@@ -34,7 +35,7 @@ def move_tube(tubes):
     visible_tubes = [tube for tube in tubes if tube.right > -50]
     return visible_tubes
 
-
+# vẽ ống
 def daw_tube(tubes):
     for tube in tubes:
         if tube.bottom >= 600:
@@ -71,28 +72,29 @@ def turning_santa(santa1):
     new_santa = pygame.transform.rotozoom(santa1, -santa_movement * 3, 1)
     return new_santa
 
-
+# hieu ung cho santa
 def santa_animation():
     new_santa = santa_list[santa_index]
     new_santa_rect = new_santa.get_rect(center=(100, santa_rect.centery))
     return new_santa, new_santa_rect
 
-
+# so diem sau khi choi
 def score_screen(state):
     
     if state == 'main game':
-        score_screen = game_font.render(str(int(score)), True, (255, 255, 255))
+        score_screen = game_font.render(str(int(score)), True, WHITE)
         score_rect = score_screen.get_rect(center=(216, 100))
         screen.blit(score_screen, score_rect)
         
     if state == 'game over':
-        score_screen = game_font.render(f'Score: {int(score)}', True, (255, 255, 255))
+        score_screen = game_font.render(f'Score: {int(score)}', True, WHITE)
         score_rect = score_screen.get_rect(center=(216, 100))
         screen.blit(score_screen, score_rect)
 
-        high_score_screen = game_font.render(f'High Score: {int(high_score)}', True, (255, 255, 255))
+        high_score_screen = game_font.render(f'High Score: {int(high_score)}', True, WHITE)
         high_score_rect = high_score_screen.get_rect(center=(216, 630))
         screen.blit(high_score_screen, high_score_rect)
+
 
 
 def update_score(score, high_score):
@@ -114,11 +116,11 @@ def tube_score():
             if tube.centerx < 0:
                 can_score = True
                 
-#dừng lại                
+#nhấn p là pause               
 def pause(stop):
     
     my_font = pygame.font.Font('Santa Claus Sounds/ComicSansMS3.ttf', 90)
-    text_surface = my_font.render("Paused", True, (255, 255, 255))
+    text_surface = my_font.render("Paused", True, WHITE)
     rect = text_surface.get_rect(center=(200, 150))
     screen.blit(text_surface, rect)
 
@@ -134,7 +136,13 @@ def pause(stop):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     stop = False
-
+                    
+def mode_day_night() :
+    if day :
+        background = pygame.image.load('Santa Claus Images/Dark.PNG')
+    elif night :
+        background = pygame.image.load('Santa Claus IMages/Light.PNG') 
+    return background
 
 pygame.init()
 pygame.display.set_caption('Flapp Santa')
@@ -152,6 +160,15 @@ score = 0
 high_score = 0
 can_score = True
 stop =False
+WHITE = (255,255,255)
+day_night = False
+
+#dark mode
+day = False
+night = False
+start = True
+play = False
+countdown = False
 # chèn background
 # convert đổi file hình ảnh thành file nhẹ hơn để pygame load nhanh hơn
 background = pygame.image.load('Santa Claus Images/dark.PNG').convert()
@@ -207,9 +224,43 @@ score_sound_countdown = 100
 score_event = pygame.USEREVENT + 2
 pygame.time.set_timer(score_event, 100)
 
+
+
+
+def button(x2, y2, width, height, active_color, action=None):
+    cur = pygame.mouse.get_pos()
+    if x2 + width > cur[0] > x2 and y2 + height > cur[1] > y2:
+        # per-pixel alpha transparent
+        s = pygame.Surface((width, height), pygame.SRCALPHA)
+        # notice the alpha value in the color
+        s.fill((68, 219, 52, 128))
+        screen.blit(s, (x2, y2))
+    
+def start_screen() :
+    pass
+
+
 # while loop của trò chơi
 while True:
 
+    if start :
+        start_screen()
+        start = False
+        play = True
+    elif play: 
+        if countdown:
+                countdown = False
+                for i in range(3):
+                    if i == 2:
+                        flags = True
+                    my_font = pygame.font.Font("ComicSansMS3.ttf", 30)
+                    s = str(3-i)
+                    text_surface = my_font.render(s, True, WHITE)
+                    rect = text_surface.get_rect(center=(170, 110))
+                    screen.blit(text_surface, rect)
+                    pygame.display.flip()
+                    time.sleep(1)
+    
     for event in pygame.event.get():
 
         # nhấn phím thoát khỏi game
@@ -233,7 +284,7 @@ while True:
             if event.key == pygame.K_p:
                 stop = True
                 pause(stop)
-                         
+                        
         if event.type == spawn_tube:
             tube_list.extend(create_tube())
             
@@ -243,6 +294,9 @@ while True:
             else:
                 santa_index = 0
             santa, santa_rect = santa_animation()
+        
+            
+            
             
     screen.blit(background, (0, 0))  # thêm background vào của sổ game
     if active:
