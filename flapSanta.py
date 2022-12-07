@@ -119,30 +119,50 @@ def tube_score():
 #nhấn p là pause               
 def pause(stop):
     
-    my_font = pygame.font.Font('Santa Claus Sounds/ComicSansMS3.ttf', 90)
-    text_surface = my_font.render("Paused", True, WHITE)
-    rect = text_surface.get_rect(center=(200, 150))
-    screen.blit(text_surface, rect)
-
     while stop: 
+        my_font = pygame.font.Font('Santa Claus Sounds/ComicSansMS3.ttf', 90)
+        text_surface = my_font.render("Paused", True, GRAY)
+        rect = text_surface.get_rect(center=(200, 150))
+        screen.blit(text_surface, rect)
+
         for event in pygame.event.get():
-            # quit the game
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
             pygame.display.update()
-            clock.tick(15)
-            # un pause the game
+            # unpause the game
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE or event.key == pygame.K_p:
                     stop = False
                     
+def play_countdown(countdown,active) :
+    
+    if countdown:
+        countdown = False
+        for i in range(3):
+            my_font = pygame.font.Font("Santa Claus Sounds/ComicSansMS3.ttf", 30)
+            num = str(3-i)
+            text_surface = my_font.render(num, True, WHITE)
+            rect = text_surface.get_rect(center=(170, 110))
+            screen.blit(text_surface, rect)
+            pygame.display.flip()
+            
+    while countdown:
+        for event in pygame.event.get():
+            pygame.display.update()
+            clock.tick(15)
+            if event.type == pygame.K_DOWN :
+                if event.button == pygame.K_SPACE and active == False:  
+                    countdown = True
+                    active = True
+                    
+    
+    
 def mode_day_night() :
     if day :
         background = pygame.image.load('Santa Claus Images/Dark.PNG')
     elif night :
         background = pygame.image.load('Santa Claus IMages/Light.PNG') 
     return background
+
+
 
 pygame.init()
 pygame.display.set_caption('Flapp Santa')
@@ -161,6 +181,7 @@ high_score = 0
 can_score = True
 stop =False
 WHITE = (255,255,255)
+GRAY = (150,150,150)
 day_night = False
 
 #dark mode
@@ -169,6 +190,7 @@ night = False
 start = True
 play = False
 countdown = False
+flags = False
 # chèn background
 # convert đổi file hình ảnh thành file nhẹ hơn để pygame load nhanh hơn
 background = pygame.image.load('Santa Claus Images/dark.PNG').convert()
@@ -183,7 +205,7 @@ floor_x = 0
 # tạo santa
 
 santa_down = pygame.image.load('Santa Claus Images/santa_icon.PNG').convert_alpha()
-santa_mid = pygame.image.load('Santa Claus Images/santa_icon.PNG').convert_alpha()
+santa_mid = pygame.image.load('Santa Claus Images/santa_icon_1.PNG').convert_alpha()
 santa_up = pygame.image.load('Santa Claus Images/santa_icon.PNG').convert_alpha()
 
 santa_list = [santa_down, santa_mid, santa_up]
@@ -220,7 +242,7 @@ hit_sound.set_volume(0.5)
 score_sound = pygame.mixer.Sound('Santa Claus Sounds/sound/sfx_point.wav')
 score_sound.set_volume(0.5)
 
-score_sound_countdown = 100
+score_sound_c = 100
 score_event = pygame.USEREVENT + 2
 pygame.time.set_timer(score_event, 100)
 
@@ -243,24 +265,11 @@ def start_screen() :
 # while loop của trò chơi
 while True:
 
-    if start :
-        start_screen()
-        start = False
-        play = True
-    elif play: 
-        if countdown:
-                countdown = False
-                for i in range(3):
-                    if i == 2:
-                        flags = True
-                    my_font = pygame.font.Font("ComicSansMS3.ttf", 30)
-                    s = str(3-i)
-                    text_surface = my_font.render(s, True, WHITE)
-                    rect = text_surface.get_rect(center=(170, 110))
-                    screen.blit(text_surface, rect)
-                    pygame.display.flip()
-                    time.sleep(1)
-    
+    # if start :
+    #     start_screen()
+    #     start = False
+    #     play = True
+    # elif play: 
     for event in pygame.event.get():
 
         # nhấn phím thoát khỏi game
@@ -274,13 +283,19 @@ while True:
                 santa_movement -= 6
                 flap_sound.play()
                 
+            
+                    
             if event.key == pygame.K_SPACE and active == False:
+                
                 active = True
+                countdown = True
+                play_countdown(countdown,active)
                 tube_list.clear()
                 santa_rect.center = (100, 384)
                 santa_movement = 0
                 score = 0
             
+                
             if event.key == pygame.K_p:
                 stop = True
                 pause(stop)

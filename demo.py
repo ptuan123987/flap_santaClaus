@@ -38,7 +38,7 @@ def main():
     FPS = 64
     speed = 5  # bird falling speed
     location = (77, 120)  # first bird location
-    location2 = (77, 100)  # second bird location
+    location2 = (77, 100)  # second bird locationc
     score = 0  # score of the first player
     score2 = 0  # score of the second player
     life = 3  # how many lives the player have
@@ -186,7 +186,7 @@ def main():
                             mode2 = False
                             playmode = True
                             daytime = True
-                            countdown = True
+                            cwn = True
                         # night mode
                         elif y < 145 and y > 120:
                             mode2 = False
