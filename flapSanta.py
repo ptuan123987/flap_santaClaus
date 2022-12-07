@@ -133,54 +133,10 @@ def pause(stop):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE or event.key == pygame.K_p:
                     stop = False
-           
-                    
-def play_countdown(countdown,active) :
-    
-    if countdown:
-        countdown = False
-        for i in range(3):
-            my_font = pygame.font.Font("Santa Claus Sounds/ComicSansMS3.ttf", 30)
-            num = str(3-i)
-            text_surface = my_font.render(num, True, WHITE)
-            rect = text_surface.get_rect(center=(170, 110))
-            screen.blit(text_surface, rect)
-            pygame.display.flip()
-            
-    while countdown:
-        for event in pygame.event.get():
-            pygame.display.update()
-            clock.tick(15)
-            if event.type == pygame.K_DOWN :
-                if event.button == pygame.K_SPACE and active == False:  
-                    countdown = True
-                    active = True
-                    
-    
-    
-def mode_day_night() :
-    if day :
-        background = pygame.image.load('Santa Claus Images/Dark.PNG')
-    elif night :
-        background = pygame.image.load('Santa Claus IMages/Light.PNG') 
-    return background
-
-def button(x2, y2, width, height, active_color, action=None):
-    cur = pygame.mouse.get_pos()
-    if x2 + width > cur[0] > x2 and y2 + height > cur[1] > y2:
-        # per-pixel alpha transparent
-        s = pygame.Surface((width, height), pygame.SRCALPHA)
-        # notice the alpha value in the color
-        s.fill((68, 219, 52, 128))
-        screen.blit(s, (x2, y2))
-    
-def start_screen() :
-    pass
-
 
 def main() : 
 
-    global image_icon,screen,clock,gravity,santa_movement, active,score,high_score,stop,WHITE,GRAY,can_score,day_night,day,night,start,play,countdown,background,floor,floor_x,santa_up,santa_down,santa_mid,santa_list,santa_index,santa,santa_rect,santa_flap,tube_screen,tube_list,spawn_tube,tube_height,game_over_screen,game_over_rect,flap_sound,hit_sound,score_sound,score_sound_c,score_event,game_font
+    global image_icon,screen,clock,gravity,santa_movement, active,score,high_score,stop,WHITE,GRAY,can_score,day_night,day,night,start,play,countdown,background,floor,floor_x,santa_up,santa_down,santa_mid,santa_list,santa_index,santa,santa_rect,santa_flap,tube_screen,tube_list,spawn_tube,tube_height,game_over_screen,game_over_rect,flap_sound,hit_sound,score_sound,score_sound_c,score_event,game_font,flags
     
     pygame.init()
     pygame.display.set_caption('Flapp Santa')
@@ -292,7 +248,6 @@ def main() :
                     
                     active = True
                     countdown = True
-                    play_countdown(countdown,active)
                     tube_list.clear()
                     santa_rect.center = (100, 384)
                     santa_movement = 0
@@ -329,7 +284,17 @@ def main() :
             daw_tube(tube_list)
             player_score()
             score_screen('main game')
-
+            if countdown:
+                countdown = False
+                for i in range(3):
+                    
+                    my_font = pygame.font.Font("Santa Claus Sounds/ComicSansMS3.ttf", 30)
+                    s = str(3-i)
+                    text_surface = my_font.render(s, True, WHITE)
+                    rect = text_surface.get_rect(center=(170, 110))
+                    screen.blit(text_surface, rect)
+                    pygame.display.flip()
+                    time.sleep(1)
         else:
 
             screen.blit(game_over_screen, game_over_rect)
