@@ -136,7 +136,7 @@ def pause(stop):
 
 def main() : 
 
-    global image_icon,screen,clock,gravity,santa_movement, active,score,high_score,stop,WHITE,GRAY,can_score,day_night,day,night,start,play,countdown,background,floor,floor_x,santa_up,santa_down,santa_mid,santa_list,santa_index,santa,santa_rect,santa_flap,tube_screen,tube_list,spawn_tube,tube_height,game_over_screen,game_over_rect,flap_sound,hit_sound,score_sound,score_sound_c,score_event,game_font,flags
+    global image_icon,screen,clock,gravity,santa_movement, active,score,high_score,stop,WHITE,GRAY,can_score,day_night,day,night,start,play,countdown,background,floor,floor_x,santa_up,santa_down,santa_mid,santa_list,santa_index,santa,santa_rect,santa_flap,tube_screen,tube_list,spawn_tube,tube_height,game_over_screen,game_over_rect,flap_sound,hit_sound,score_sound,score_sound_c,score_event,game_font,flags,can_countdown
     
     pygame.init()
     pygame.display.set_caption('Flapp Santa')
@@ -159,12 +159,9 @@ def main() :
     day_night = False
 
     #dark mode
-    day = False
-    night = False
-    start = True
-    play = False
     countdown = False
     flags = False
+    can_countdown = True
     # chèn background
     # convert đổi file hình ảnh thành file nhẹ hơn để pygame load nhanh hơn
     background = pygame.image.load('Santa Claus Images/dark.PNG').convert()
@@ -284,17 +281,19 @@ def main() :
             daw_tube(tube_list)
             player_score()
             score_screen('main game')
-            if countdown:
+            if countdown :
                 countdown = False
+
                 for i in range(3):
-                    
+   
                     my_font = pygame.font.Font("Santa Claus Sounds/ComicSansMS3.ttf", 30)
                     s = str(3-i)
                     text_surface = my_font.render(s, True, WHITE)
                     rect = text_surface.get_rect(center=(170, 110))
                     screen.blit(text_surface, rect)
                     pygame.display.flip()
-                    time.sleep(1)
+                    time.sleep(0.5)
+                    
         else:
 
             screen.blit(game_over_screen, game_over_rect)
