@@ -6,9 +6,10 @@ import pygame
 class Santa() :
     
     def _init_(self) :
-        self
-    def turning_santa(santa1):
-        new_santa = pygame.transform.rotozoom(santa1, -santa_movement * 3, 1)
+        self.santa = santa
+        
+    def turning_santa(santa):
+        new_santa = pygame.transform.rotozoom(santa, -santa_movement * 3, 1)
         return new_santa
 
     # hieu ung cho santa
@@ -66,10 +67,8 @@ class Tube() :
             tube.centerx -= 5
         visible_tubes = [tube for tube in tubes if tube.right > -50]
         return visible_tubes
-    
     #  va chạm
-    def collision(tubes):
-        global can_score
+    def collision(tubes,can_score):
         for tube in tubes:
             if santa_rect.colliderect(tube):
                 hit_sound.play()
@@ -176,7 +175,6 @@ def main():
 
     # tạo các biến cho trò chơi
     gravity = 0.2
-    santa_movement = 0
     active = True
     score = 0
     high_score = 0
@@ -214,6 +212,7 @@ def main():
     santa = santa_list[santa_index]
     santa_rect = santa.get_rect(center=(100, 384))
 
+    santa_movement = 0
     # tạo timer cho santa
     santa_flap = pygame.USEREVENT + 1
     pygame.time.set_timer(santa_flap, 216)
@@ -247,7 +246,7 @@ def main():
     score_event = pygame.USEREVENT + 2
     pygame.time.set_timer(score_event, 100)
     
-    santa = Santa()
+    santa_claus = Santa()
     tube = Tube()
     game_score = Score()
     floor = Floor()
@@ -265,9 +264,7 @@ def main():
                     santa_movement = 0
                     santa_movement -= 6
                     flap_sound.play()
-                    
-                
-                        
+                         
                 if event.key == pygame.K_SPACE and active == False:
                     
                     active = True
@@ -276,8 +273,6 @@ def main():
                     santa_rect.center = (100, 384)
                     santa_movement = 0
                     score = 0
-                
-                    
                 if event.key == pygame.K_p:
                     stop = True
                     pause(stop)
@@ -290,15 +285,16 @@ def main():
                     santa_index += 1
                 else:
                     santa_index = 0
-                santa, santa_rect = santa.santa_animation()
+                santa, santa_rect = santa_claus.santa_animation()
         screen.blit(background, (0, 0))  # thêm background vào của sổ game
         if active:
             # santa
             santa_movement += gravity
-            turningd_santa = santa.turning_santa(santa)
+            turning_santa = santa_claus.turning_santa(santa)
             santa_rect.centery += santa_movement  # di chuyển xuống dưới
-            screen.blit(turningd_santa, santa_rect)
-            active = tube.collision(tube_list)
+            screen.blit(turning_santa, santa_rect)
+            active = tube.collision(tube_list,can_score)
+            
             # ống
             tube_list = tube.move_tube(tube_list)
             tube.daw_tube(tube_list)
@@ -320,7 +316,7 @@ def main():
 
             screen.blit(game_over_screen, game_over_rect)
             high_score = game_score.update_score(score, high_score)
-            score.score_screen('game over')
+            game_score.score_screen('game over')
             
         # sàn
         floor_x -= 1  # di chuyển lùi lại phía bên trái

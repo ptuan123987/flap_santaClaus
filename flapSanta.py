@@ -221,11 +221,6 @@ def main() :
     # while loop của trò chơi
     while True:
 
-        # if start :
-        #     start_screen()
-        #     start = False
-        #     play = True
-        # elif play: 
         for event in pygame.event.get():
 
             # nhấn phím thoát khỏi game
@@ -238,9 +233,7 @@ def main() :
                     santa_movement = 0
                     santa_movement -= 6
                     flap_sound.play()
-                    
-                
-                        
+    
                 if event.key == pygame.K_SPACE and active == False:
                     
                     active = True
@@ -289,7 +282,7 @@ def main() :
                     my_font = pygame.font.Font("Santa Claus Sounds/ComicSansMS3.ttf", 30)
                     s = str(3-i)
                     text_surface = my_font.render(s, True, WHITE)
-                    rect = text_surface.get_rect(center=(170, 110))
+                    rect = text_surface.get_rect(center=(216, 384))
                     screen.blit(text_surface, rect)
                     pygame.display.flip()
                     time.sleep(0.5)
