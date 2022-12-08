@@ -212,8 +212,9 @@ def main() :
     # chèn âm thanh
     #Background sound
     mixer.music.load('Santa Claus Sounds/sound/background.wav')
-    mixer.music.set_volume(0.5)
+    mixer.music.set_volume(0.3)
     mixer.music.play(-1)
+    
     flap_sound = pygame.mixer.Sound('Santa Claus Sounds/sound/sfx_wing.wav')
     flap_sound.set_volume(0.5)
 
