@@ -2,7 +2,7 @@ import random
 import sys
 import time
 import pygame
-
+from pygame import mixer
 class Santa() :
     
     def _init_(self) :
@@ -233,6 +233,10 @@ def main():
     screen.blit(game_over_screen, game_over_rect)
 
     # chèn âm thanh
+    #Background sound
+    mixer.music.load('Santa Claus Sounds/sound/background.wav')
+    mixer.music.set_volume(0.5)
+    mixer.music.play(-1)
     flap_sound = pygame.mixer.Sound('Santa Claus Sounds/sound/sfx_wing.wav')
     flap_sound.set_volume(0.5)
 
@@ -313,7 +317,6 @@ def main():
                     time.sleep(0.5)
                     
         else:
-
             screen.blit(game_over_screen, game_over_rect)
             high_score = game_score.update_score(score, high_score)
             game_score.score_screen('game over')

@@ -1,9 +1,8 @@
 import random
 import sys
 import time
-
 import pygame
-
+from pygame import mixer
 
 # tạo hai sàn để khi lùi sàn sẽ k bị mất
 def draw_floor():
@@ -29,7 +28,7 @@ def create_tube():
 
 
 # vẽ ống
-def daw_tube(tubes):
+def draw_tube(tubes):
     for tube in tubes:
         if tube.bottom >= 600:
             screen.blit(tube_screen, tube)
@@ -92,10 +91,18 @@ def score_screen(state):
         score_screen = game_font.render(f'Score: {int(score)}', True, WHITE)
         score_rect = score_screen.get_rect(center=(216, 100))
         screen.blit(score_screen, score_rect)
-
+        
+        
+        text_space = game_font.render(f'Press Space To Play', True, WHITE)
+        text_rect =  text_space.get_rect(center=(216, 184))
+        screen.blit(text_space, text_rect)
+        
+                
+        
         high_score_screen = game_font.render(f'High Score: {int(high_score)}', True, WHITE)
         high_score_rect = high_score_screen.get_rect(center=(216, 630))
         screen.blit(high_score_screen, high_score_rect)
+        
 
 def player_score():
     global score, can_score
@@ -204,6 +211,10 @@ def main() :
     screen.blit(game_over_screen, game_over_rect)
 
     # chèn âm thanh
+    #Background sound
+    mixer.music.load('Santa Claus Sounds/sound/background.wav')
+    mixer.music.set_volume(0.5)
+    mixer.music.play(-1)
     flap_sound = pygame.mixer.Sound('Santa Claus Sounds/sound/sfx_wing.wav')
     flap_sound.set_volume(0.5)
 
@@ -243,7 +254,6 @@ def main() :
                     santa_movement = 0
                     score = 0
                 
-                    
                 if event.key == pygame.K_p:
                     stop = True
                     pause(stop)
@@ -271,14 +281,12 @@ def main() :
             active = collision(tube_list)
             # ống
             tube_list = move_tube(tube_list)
-            daw_tube(tube_list)
+            draw_tube(tube_list)
             player_score()
             score_screen('main game')
             if countdown :
                 countdown = False
-
                 for i in range(3):
-   
                     my_font = pygame.font.Font("Santa Claus Sounds/ComicSansMS3.ttf", 30)
                     s = str(3-i)
                     text_surface = my_font.render(s, True, WHITE)
@@ -286,7 +294,6 @@ def main() :
                     screen.blit(text_surface, rect)
                     pygame.display.flip()
                     time.sleep(0.5)
-                    
         else:
 
             screen.blit(game_over_screen, game_over_rect)
