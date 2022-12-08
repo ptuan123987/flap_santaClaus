@@ -98,7 +98,6 @@ def score_screen(state):
         screen.blit(text_space, text_rect)
         
                 
-        
         high_score_screen = game_font.render(f'High Score: {int(high_score)}', True, WHITE)
         high_score_rect = high_score_screen.get_rect(center=(216, 630))
         screen.blit(high_score_screen, high_score_rect)
